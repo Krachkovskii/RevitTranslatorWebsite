@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(cd \"C:\\\\Users\\\\ilia\\\\RiderProjects\\\\Personal\\\\RevitTranslatorWebsite\" && npm install 2>&1)",
+      "Bash(cd \"C:\\\\Users\\\\ilia\\\\RiderProjects\\\\Personal\\\\RevitTranslatorWebsite\" && npx tsc 2>&1)",
+      "Bash(for f:*)",
+      "Bash(python -c \"import json; d=json.load\\(open\\('C:/Users/ilia/RiderProjects/Personal/RevitTranslatorWebsite/locales/de.json', encoding='utf-8'\\)\\); print\\(d['step4']\\)\")",
+      "Bash(python -c \"import json,sys; sys.stdout=open\\(sys.stdout.fileno\\(\\),'w',encoding='utf-8',closefd=False\\); d=json.load\\(open\\('C:/Users/ilia/RiderProjects/Personal/RevitTranslatorWebsite/locales/de.json', encoding='utf-8'\\)\\); print\\(d['step4']\\)\")"
+    ]
+  }
+}

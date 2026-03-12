@@ -1,3 +1,8 @@
 {
-  "tagline": "BIM ローカライゼーションツール"
+  "tagline": "BIM ローカライゼーションツール",
+  "download_btn": "GitHub からダウンロード",
+  "step1": "ボタンをクリックします。",
+  "step2": "お使いの Revit バージョン用の <code>.msi</code> ファイルをダウンロードします。",
+  "step3": "<code>.msi</code> ファイルを実行します。",
+  "step4": "Revit を開きます。Translator は「Add-ins」タブにあります。"
 }

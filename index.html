@@ -13,17 +13,61 @@
     window.dataLayer = window.dataLayer || [];
     function gtag(){dataLayer.push(arguments);}
     gtag('js', new Date());
-
     gtag('config', 'G-PM84V5HMN0');
   </script>
 </head>
 <body>
 
+  <!-- Language selector — fixed, top-right of screen -->
+  <div class="lang-selector">
+    <button class="lang-trigger" id="lang-trigger"
+            aria-haspopup="listbox" aria-expanded="false"
+            aria-label="Select language">
+      <!-- Globe icon (Feather) -->
+      <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15"
+           viewBox="0 0 24 24" fill="none" stroke="currentColor"
+           stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+           aria-hidden="true">
+        <circle cx="12" cy="12" r="10"/>
+        <line x1="2" y1="12" x2="22" y2="12"/>
+        <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10
+                 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+      </svg>
+      <span id="lang-code">EN</span>
+      <!-- Chevron -->
+      <svg class="lang-chevron" xmlns="http://www.w3.org/2000/svg"
+           width="11" height="11" viewBox="0 0 24 24" fill="none"
+           stroke="currentColor" stroke-width="2.5"
+           stroke-linecap="round" stroke-linejoin="round"
+           aria-hidden="true">
+        <polyline points="6 9 12 15 18 9"/>
+      </svg>
+    </button>
+    <ul class="lang-dropdown" id="lang-dropdown"
+        role="listbox" aria-label="Language"></ul>
+  </div>
+
   <main class="hero" role="main">
-    <h1 class="title">Revit Translator</h1>
-    <p class="subtitle" aria-live="polite" aria-label="Tagline">
-      <span id="typewriter"></span>
-    </p>
+    <div class="hero-top">
+      <h1 class="title">Revit Translator</h1>
+      <p class="subtitle" aria-live="polite" aria-label="Tagline">
+        <span id="typewriter"></span>
+      </p>
+    </div>
+
+    <div class="hero-bottom">
+      <a href="https://github.com/Krachkovskii/RevitTranslator/releases/latest"
+         class="download-btn"
+         data-i18n="download_btn"
+         target="_blank"
+         rel="noopener noreferrer">Download from GitHub</a>
+      <ul class="install-steps">
+        <li data-i18n="step1">Press the button.</li>
+        <li data-i18n="step2">Download <code>.msi</code> file for your Revit version.</li>
+        <li data-i18n="step3">Run the <code>.msi</code> file.</li>
+        <li data-i18n="step4">Open Revit. Translator will be in &#x201C;Add-ins&#x201D; tab.</li>
+      </ul>
+    </div>
   </main>
 
   <script type="module" src="js/main.js"></script>

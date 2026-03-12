@@ -12,8 +12,9 @@
 
 :root {
   --accent:        #2196F3;
+  --accent-hover:  #1e88e5;
+  --accent-press:  #1976d2;
   --accent-light:  #64B5F6;
-  --accent-glow:   rgba(33, 150, 243, 0.25);
 
   --bg:            #e8e8e8;
   --surface:       rgba(255, 255, 255, 0.68);
@@ -36,11 +37,6 @@ body {
   font-family: var(--font);
   background-color: var(--bg);
 
-  /*
-   * Layer order (top → bottom):
-   *   1. Noise  — fractal grain over everything
-   *   2–5. Soft radial colour blobs at low opacity
-   */
   background-image:
     url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='256' height='256'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.72' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='256' height='256' filter='url(%23n)'/%3E%3C/svg%3E"),
     radial-gradient(ellipse 65% 55% at 80%  10%, rgba(240, 130, 160, 0.18) 0%, transparent 65%),
@@ -48,23 +44,20 @@ body {
     radial-gradient(ellipse 80% 60% at 50%   0%, rgba( 33, 150, 243, 0.15) 0%, transparent 70%),
     radial-gradient(ellipse 50% 40% at 85%  90%, rgba(160, 210, 140, 0.14) 0%, transparent 55%);
 
-  /* overlay blends noise naturally on light backgrounds without darkening them */
   background-blend-mode: overlay, normal, normal, normal, normal;
 
   min-height: 100dvh;
   display: flex;
   align-items: center;
   justify-content: center;
-
-  /* Prevent layout shift when typewriter changes width */
   overflow: hidden;
 }
 
 /* --- Hero card ------------------------------------------- */
 .hero {
-  /* Acrylic / mica glass card */
-  position: relative;        /* stacking context for ::before */
-  overflow: hidden;          /* clip the noise layer */
+  position: relative;
+  /* overflow: visible so the lang dropdown is never clipped */
+  overflow: visible;
 
   background: var(--surface);
   border: 1px solid var(--surface-border);
@@ -74,21 +67,16 @@ body {
 
   box-shadow: var(--shadow-md);
 
-  /*
-   * Fixed width so the card never grows/shrinks as the typewriter cycles.
-   * 680px comfortably fits the longest translated phrase (Japanese) at max
-   * subtitle font size without wrapping. Clamp keeps it responsive.
-   */
   width: clamp(320px, 80vw, 680px);
 
-  padding: clamp(2.5rem, 6vw, 5rem) clamp(2.5rem, 7vw, 6rem);
+  /* Reduced vertical padding (issue 2) */
+  padding: clamp(1.5rem, 4vw, 3rem) clamp(2.5rem, 7vw, 6rem);
   text-align: center;
 
-  /* Subtle entrance animation */
   animation: fadeUp 0.6s cubic-bezier(.22,1,.36,1) both;
 }
 
-/* Acrylic surface noise grain */
+/* Acrylic surface noise grain — clipped to card shape */
 .hero::before {
   content: '';
   position: absolute;
@@ -99,6 +87,8 @@ body {
   opacity: var(--noise-opacity);
   pointer-events: none;
   z-index: 0;
+  /* clip to card corners since parent no longer has overflow:hidden */
+  clip-path: inset(0 round var(--radius));
 }
 
 /* Keep card content above the noise layer */
@@ -112,17 +102,93 @@ body {
   to   { opacity: 1; transform: translateY(0);    }
 }
 
+/* --- Language selector (fixed, top-right of screen) ------ */
+.lang-selector {
+  position: fixed;
+  top: 24px;
+  right: 24px;
+  z-index: 1000;
+}
+
+.lang-trigger {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(255, 255, 255, 0.82);
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  border-radius: 4px;
+  padding: 9px 14px;
+  font-family: var(--font);
+  font-size: 0.85rem;
+  font-weight: 400;
+  color: var(--text-primary);
+  cursor: pointer;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  box-shadow: var(--shadow-sm);
+  transition: background 0.1s, border-color 0.1s;
+  white-space: nowrap;
+}
+
+.lang-trigger:hover {
+  background: rgba(255, 255, 255, 0.97);
+  border-color: rgba(0, 0, 0, 0.20);
+}
+
+.lang-chevron {
+  transition: transform 0.15s;
+}
+
+.lang-trigger[aria-expanded="true"] .lang-chevron {
+  transform: rotate(180deg);
+}
+
+.lang-dropdown {
+  display: none;
+  position: absolute;
+  top: calc(100% + 4px);
+  right: 0;
+  min-width: 150px;
+  list-style: none;
+  background: #fff;
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  border-radius: 6px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.14);
+  padding: 4px 0;
+  z-index: 100;
+}
+
+.lang-dropdown.open {
+  display: block;
+}
+
+.lang-option {
+  margin: 0 4px;
+  padding: 9px 10px;
+  border-radius: 4px;
+  font-size: 0.85rem;
+  color: var(--text-primary);
+  cursor: pointer;
+  transition: background 0.08s;
+}
+
+.lang-option:not([aria-selected="true"]):hover {
+  background: rgba(0, 0, 0, 0.06);
+}
+
+.lang-option[aria-selected="true"] {
+  box-shadow: inset 0 0 0 2px var(--accent);
+  background: #fff;
+}
+
 /* --- Title (static) -------------------------------------- */
 .title {
   font-size: clamp(2rem, 5vw, 3.5rem);
-  font-weight: 600;
+  font-weight: 700;
   letter-spacing: -0.02em;
-  color: var(--text-primary);
-
-  /* Accent underline bar */
-  padding-bottom: 0.2em;
-  border-bottom: 3px solid var(--accent);
-  margin-bottom: 0.55em;
+  color: var(--accent);
+  /* Reduced gap to subtitle (issue 1) */
+  margin-bottom: 0.15em;
 }
 
 /* --- Typewriter line ------------------------------------- */
@@ -131,8 +197,8 @@ body {
   font-weight: 400;
   color: var(--text-secondary);
   letter-spacing: 0.01em;
+  text-decoration: none;
 
-  /* Fixed height + no wrapping — card height never shifts */
   height: 2em;
   white-space: nowrap;
   overflow: hidden;
@@ -141,7 +207,7 @@ body {
   justify-content: center;
 }
 
-/* Blinking cursor appended via pseudo-element on the inner span */
+/* Blinking cursor */
 #typewriter::after {
   content: '|';
   color: var(--accent);
@@ -153,4 +219,83 @@ body {
 @keyframes blink {
   0%, 100% { opacity: 1; }
   50%       { opacity: 0; }
+}
+
+/* --- Bottom section -------------------------------------- */
+.hero-bottom {
+  margin-top: clamp(1.2rem, 3.5vw, 2rem);
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: clamp(0.9rem, 2.5vw, 1.25rem);
+}
+
+/* --- Download button (Win11 accent, <a> styled as button) */
+.download-btn {
+  display: block;
+  background: var(--accent);
+  color: #fff;
+  font-family: var(--font);
+  font-size: clamp(1rem, 2.5vw, 1.15rem);
+  font-weight: 600;
+  text-decoration: none;
+  text-align: center;
+  border: none;
+  border-radius: 4px;
+  padding: 0.6em 1.5em;
+  cursor: pointer;
+  box-shadow: 0 1px 3px rgba(0,0,0,.20), inset 0 1px 0 rgba(255,255,255,.15);
+  transition: background 0.1s, box-shadow 0.1s, transform 0.08s;
+}
+
+.download-btn:visited {
+  color: #fff;
+}
+
+.download-btn:hover {
+  background: var(--accent-hover);
+  color: #fff;
+  text-decoration: none;
+  box-shadow: 0 2px 6px rgba(0,0,0,.25), inset 0 1px 0 rgba(255,255,255,.15);
+}
+
+.download-btn:active {
+  background: var(--accent-press);
+  color: #fff;
+  text-decoration: none;
+  box-shadow: inset 0 1px 3px rgba(0,0,0,.25);
+  transform: translateY(1px);
+}
+
+/* --- Install steps annotation ---------------------------- */
+.install-steps {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  font-size: clamp(0.85rem, 2vw, 1rem);
+  color: var(--text-secondary);
+  line-height: 1.8;
+  text-align: left;
+}
+
+.install-steps li {
+  position: relative;
+  padding-left: 1.4em;
+}
+
+.install-steps li::before {
+  content: '>';
+  position: absolute;
+  left: 0;
+  color: var(--accent);
+  font-weight: 700;
+}
+
+.install-steps code {
+  font-family: 'Cascadia Code', 'Consolas', monospace;
+  background: rgba(33, 150, 243, 0.10);
+  color: var(--accent);
+  padding: 0.1em 0.35em;
+  border-radius: 4px;
+  font-size: 0.92em;
 }

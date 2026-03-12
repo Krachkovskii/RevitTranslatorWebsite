@@ -1,3 +1,8 @@
 {
-  "tagline": "BIM-Lokalisierungswerkzeug"
+  "tagline": "BIM-Lokalisierungswerkzeug",
+  "download_btn": "Von GitHub herunterladen",
+  "step1": "Klicken Sie auf die Schaltfläche.",
+  "step2": "Laden Sie die <code>.msi</code>-Datei für Ihre Revit-Version herunter.",
+  "step3": "Führen Sie die <code>.msi</code>-Datei aus.",
+  "step4": "Öffnen Sie Revit. Translator befindet sich im Tab „Add-ins\u201C."
 }

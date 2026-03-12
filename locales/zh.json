@@ -1,3 +1,8 @@
 {
-  "tagline": "BIM 本地化工具"
+  "tagline": "BIM 本地化工具",
+  "download_btn": "从 GitHub 下载",
+  "step1": "点击按钮。",
+  "step2": "下载适用于您 Revit 版本的 <code>.msi</code> 文件。",
+  "step3": "运行 <code>.msi</code> 文件。",
+  "step4": "打开 Revit。Translator 将位于「Add-ins」选项卡中。"
 }

@@ -1,3 +1,8 @@
 {
-  "tagline": "BIM Localization Tool"
+  "tagline": "BIM Localization Tool",
+  "download_btn": "Download from GitHub",
+  "step1": "Press the button.",
+  "step2": "Download <code>.msi</code> file for your Revit version.",
+  "step3": "Run the <code>.msi</code> file.",
+  "step4": "Open Revit. Translator will be in \u201cAdd-ins\u201d tab."
 }

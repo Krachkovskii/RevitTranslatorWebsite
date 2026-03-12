@@ -1,3 +1,8 @@
 {
-  "tagline": "Ferramenta de localização BIM"
+  "tagline": "Ferramenta de localização BIM",
+  "download_btn": "Baixar do GitHub",
+  "step1": "Clique no botão.",
+  "step2": "Baixe o arquivo <code>.msi</code> para a sua versão do Revit.",
+  "step3": "Execute o arquivo <code>.msi</code>.",
+  "step4": "Abra o Revit. O Translator estará na aba «Add-ins»."
 }
