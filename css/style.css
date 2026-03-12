@@ -1,0 +1,156 @@
+/* =========================================================
+   Revit Translator — Windows 11 / Fluent Design aesthetic
+   Accent: #2196F3
+   ========================================================= */
+
+/* --- Reset & base ---------------------------------------- */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --accent:        #2196F3;
+  --accent-light:  #64B5F6;
+  --accent-glow:   rgba(33, 150, 243, 0.25);
+
+  --bg:            #e8e8e8;
+  --surface:       rgba(255, 255, 255, 0.68);
+  --surface-border:rgba(255, 255, 255, 0.55);
+
+  --text-primary:  #1a1a1a;
+  --text-secondary:#5a5a5a;
+
+  --font:          'Segoe UI', system-ui, -apple-system, sans-serif;
+  --radius:        16px;
+
+  --shadow-sm:     0 2px  8px rgba(0,0,0,.06);
+  --shadow-md:     0 8px 32px rgba(0,0,0,.10);
+
+  --noise-opacity: 0.04;
+}
+
+/* --- Background ------------------------------------------ */
+body {
+  font-family: var(--font);
+  background-color: var(--bg);
+
+  /*
+   * Layer order (top → bottom):
+   *   1. Noise  — fractal grain over everything
+   *   2–5. Soft radial colour blobs at low opacity
+   */
+  background-image:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='256' height='256'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.72' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='256' height='256' filter='url(%23n)'/%3E%3C/svg%3E"),
+    radial-gradient(ellipse 65% 55% at 80%  10%, rgba(240, 130, 160, 0.18) 0%, transparent 65%),
+    radial-gradient(ellipse 60% 50% at 15%  80%, rgba(120, 190, 130, 0.18) 0%, transparent 60%),
+    radial-gradient(ellipse 80% 60% at 50%   0%, rgba( 33, 150, 243, 0.15) 0%, transparent 70%),
+    radial-gradient(ellipse 50% 40% at 85%  90%, rgba(160, 210, 140, 0.14) 0%, transparent 55%);
+
+  /* overlay blends noise naturally on light backgrounds without darkening them */
+  background-blend-mode: overlay, normal, normal, normal, normal;
+
+  min-height: 100dvh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  /* Prevent layout shift when typewriter changes width */
+  overflow: hidden;
+}
+
+/* --- Hero card ------------------------------------------- */
+.hero {
+  /* Acrylic / mica glass card */
+  position: relative;        /* stacking context for ::before */
+  overflow: hidden;          /* clip the noise layer */
+
+  background: var(--surface);
+  border: 1px solid var(--surface-border);
+  border-radius: var(--radius);
+  backdrop-filter: blur(24px) saturate(180%);
+  -webkit-backdrop-filter: blur(24px) saturate(180%);
+
+  box-shadow: var(--shadow-md);
+
+  /*
+   * Fixed width so the card never grows/shrinks as the typewriter cycles.
+   * 680px comfortably fits the longest translated phrase (Japanese) at max
+   * subtitle font size without wrapping. Clamp keeps it responsive.
+   */
+  width: clamp(320px, 80vw, 680px);
+
+  padding: clamp(2.5rem, 6vw, 5rem) clamp(2.5rem, 7vw, 6rem);
+  text-align: center;
+
+  /* Subtle entrance animation */
+  animation: fadeUp 0.6s cubic-bezier(.22,1,.36,1) both;
+}
+
+/* Acrylic surface noise grain */
+.hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='256' height='256'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.72' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='256' height='256' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-repeat: repeat;
+  opacity: var(--noise-opacity);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Keep card content above the noise layer */
+.hero > * {
+  position: relative;
+  z-index: 1;
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: translateY(0);    }
+}
+
+/* --- Title (static) -------------------------------------- */
+.title {
+  font-size: clamp(2rem, 5vw, 3.5rem);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  color: var(--text-primary);
+
+  /* Accent underline bar */
+  padding-bottom: 0.2em;
+  border-bottom: 3px solid var(--accent);
+  margin-bottom: 0.55em;
+}
+
+/* --- Typewriter line ------------------------------------- */
+.subtitle {
+  font-size: clamp(1.1rem, 2.8vw, 1.75rem);
+  font-weight: 400;
+  color: var(--text-secondary);
+  letter-spacing: 0.01em;
+
+  /* Fixed height + no wrapping — card height never shifts */
+  height: 2em;
+  white-space: nowrap;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Blinking cursor appended via pseudo-element on the inner span */
+#typewriter::after {
+  content: '|';
+  color: var(--accent);
+  font-weight: 300;
+  margin-left: 2px;
+  animation: blink 1.1s step-start infinite;
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0; }
+}
