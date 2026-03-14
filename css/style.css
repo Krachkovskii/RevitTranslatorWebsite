@@ -11,6 +11,7 @@
 }
 
 :root {
+  /* — Colours — */
   --accent:        #2196F3;
   --accent-hover:  #1e88e5;
   --accent-press:  #1976d2;
@@ -23,13 +24,35 @@
   --text-primary:  #1a1a1a;
   --text-secondary:#5a5a5a;
 
+  /* — Typography — */
   --font:          'Segoe UI', system-ui, -apple-system, sans-serif;
-  --radius:        16px;
 
+  /* — Surfaces — */
+  --radius:        16px;
+  --radius-sm:     8px;
   --shadow-sm:     0 2px  8px rgba(0,0,0,.06);
   --shadow-md:     0 8px 32px rgba(0,0,0,.10);
-
   --noise-opacity: 0.04;
+
+  /* — Spacing scale (4-pt grid) — */
+  --space-1:  0.25rem;  /*  4px */
+  --space-2:  0.5rem;   /*  8px */
+  --space-3:  0.75rem;  /* 12px */
+  --space-4:  1rem;     /* 16px */
+  --space-6:  1.5rem;   /* 24px */
+  --space-8:  2rem;     /* 32px */
+  --space-12: 3rem;     /* 48px */
+  --space-16: 4rem;     /* 64px */
+
+  /* — Layout — */
+  --hero-min-w:    320px;
+  --hero-max-w:    680px;
+  --page-gutter:   var(--space-6);  /* min space between card & viewport edge */
+
+  /* — Breakpoints (for reference in @media queries below) —
+     --bp-sm:  480px   (small phones)
+     --bp-md:  768px   (tablets / large phones)
+     --bp-lg: 1024px   (desktops)          */
 }
 
 /* --- Background ------------------------------------------ */
@@ -45,12 +68,17 @@ body {
     radial-gradient(ellipse 50% 40% at 85%  90%, rgba(160, 210, 140, 0.14) 0%, transparent 55%);
 
   background-blend-mode: overlay, normal, normal, normal, normal;
+  background-attachment: fixed;
 
   min-height: 100dvh;
   display: flex;
   align-items: center;
   justify-content: center;
-  overflow: hidden;
+  /* Allow vertical scroll if content ever exceeds viewport height */
+  overflow-x: hidden;
+  overflow-y: auto;
+  /* Pad so the card never sits flush against the viewport edges */
+  padding: var(--page-gutter);
 }
 
 /* --- Hero card ------------------------------------------- */
@@ -67,10 +95,10 @@ body {
 
   box-shadow: var(--shadow-md);
 
-  width: clamp(320px, 80vw, 680px);
+  /* Never narrower than 320px, never wider than 680px, never wider than viewport */
+  width: min(clamp(var(--hero-min-w), 90vw, var(--hero-max-w)), 100%);
 
-  /* Reduced vertical padding (issue 2) */
-  padding: clamp(1.5rem, 4vw, 3rem) clamp(2.5rem, 7vw, 6rem);
+  padding: clamp(1.5rem, 4vw, 3rem) clamp(1.5rem, 6vw, 5rem);
   text-align: center;
 
   animation: fadeUp 0.6s cubic-bezier(.22,1,.36,1) both;
@@ -298,4 +326,54 @@ body {
   padding: 0.1em 0.35em;
   border-radius: 4px;
   font-size: 0.92em;
+}
+
+/* =========================================================
+   Responsive breakpoints
+   =========================================================
+   Architecture note: clamp() handles fluid scaling between
+   breakpoints. Media queries handle discrete layout changes
+   that clamp() cannot express (touch targets, positioning,
+   show/hide elements, structural layout shifts).
+   ========================================================= */
+
+/* --- Small phones  ≤ 480px ------------------------------- */
+@media (max-width: 480px) {
+  :root {
+    --page-gutter: var(--space-4);  /* tighter page margin on small screens */
+    --radius:      12px;
+  }
+
+  /* Pull the lang selector closer to the corner on small screens */
+  .lang-selector {
+    top: var(--space-3);
+    right: var(--space-3);
+  }
+
+  /* Increase touch target size for the language button */
+  .lang-trigger {
+    padding: 10px var(--space-3);
+    min-height: 44px;   /* WCAG 2.5.5 minimum touch target */
+  }
+
+  /* Allow the typewriter subtitle to wrap on very narrow cards */
+  .subtitle {
+    white-space: normal;
+    height: auto;
+    min-height: 2em;
+  }
+}
+
+/* --- Tablets / large phones  768px – 1023px -------------- */
+@media (min-width: 481px) and (max-width: 1023px) {
+  :root {
+    --page-gutter: var(--space-8);
+  }
+}
+
+/* --- Desktop  ≥ 1024px ----------------------------------- */
+@media (min-width: 1024px) {
+  :root {
+    --page-gutter: var(--space-12);
+  }
 }
