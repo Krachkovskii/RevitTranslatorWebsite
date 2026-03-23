@@ -15,6 +15,8 @@
     gtag('js', new Date());
     gtag('config', 'G-PM84V5HMN0');
   </script>
+  <script src="https://cdn.paddle.com/paddle/v2/paddle.js"></script>
+  
 </head>
 <body>
 
@@ -71,5 +73,17 @@
   </main>
 
   <script type="module" src="js/main.js"></script>
+  
+  <script type="text/javascript">
+        // 2. Initialize Paddle with your Client Side Token (from your dashboard)
+        // Ensure you are using the SANDBOX token if you're in the Sandbox environment
+        Paddle.Setup({ 
+            token: 'test_your_client_side_token_here' 
+        });
+
+        // 3. You don't actually need to write code to open the checkout!
+        // Because the URL has ?_ptxn=..., Paddle.js will automatically 
+        // detect it upon initialization and pop up the overlay.
+    </script>
 </body>
 </html>
