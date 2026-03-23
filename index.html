@@ -75,15 +75,11 @@
   <script type="module" src="js/main.js"></script>
   
   <script type="text/javascript">
-        // 2. Initialize Paddle with your Client Side Token (from your dashboard)
-        // Ensure you are using the SANDBOX token if you're in the Sandbox environment
-        Paddle.Setup({ 
-            token: 'test_your_client_side_token_here' 
-        });
+    Paddle.Environment.set('sandbox'); 
 
-        // 3. You don't actually need to write code to open the checkout!
-        // Because the URL has ?_ptxn=..., Paddle.js will automatically 
-        // detect it upon initialization and pop up the overlay.
-    </script>
+    Paddle.Initialize({ 
+        token: 'test_your_client_token_here'
+    });
+  </script>
 </body>
 </html>
