@@ -78,7 +78,7 @@
     Paddle.Environment.set('sandbox'); 
 
     Paddle.Initialize({ 
-        token: 'test_your_client_token_here'
+        token: process.env.REACT_APP_PADDLE_CLIENT_TOKEN
     });
   </script>
 </body>
